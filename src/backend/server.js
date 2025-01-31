@@ -1,8 +1,12 @@
 // connecting the required dependencies to the backend
-import express from "express";
-import mysql from "mysql2";
-import cors from "cors";
-import bodyParser from "body-parser";
+// import express from "express";
+// import mysql from "mysql2";
+// import cors from "cors";
+// import bodyParser from "body-parser";
+const express = require("express");
+const mysql = require("mysql2");
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 // express setup
 const app = express();
@@ -13,7 +17,7 @@ app.use(bodyParser.json());
 const LoginDB = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"", // provide your own password
+    password:"gun@SQL@25", // provide your own password
     database:"SaferiLogin",
 });
 
