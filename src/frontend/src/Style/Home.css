@@ -1,0 +1,140 @@
+/* Full page container */
+.home-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For positioning the SOS button correctly */
+  overflow: hidden; /* Prevent scrolling */
+  margin: 0; /* Ensure no extra spacing */
+}
+
+/* Navbar */
+.navbar {
+  width: 100vw;
+  height: 60px;
+  background: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+/* Navbar links */
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+}
+
+/* SOS Button */
+.sos-button {
+  position: absolute;
+  bottom: 20px; /* Positioned towards the bottom */
+  right: 20px; /* Positioned towards the right */
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10; /* Ensures it's above other content */
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 60px); /* Adjusted to accommodate the navbar */
+  box-sizing: border-box; /* Prevent any overflow issues */
+}
+
+/* Left side Source & Destination Section */
+.location-section {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box; /* Prevent overflow */
+  margin-left: 0; /* Ensure no extra left margin */
+}
+
+.location-section label {
+  font-size: 16px;
+  margin: 10px 0 5px;
+}
+
+.location-section input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Background Map */
+.map-background {
+  flex-grow: 1;
+  background: url("../assets/cityscape.jpg") no-repeat center center/cover;
+  height: 100%; /* Ensure the background covers the entire remaining space */
+  box-sizing: border-box; /* Prevent overflow */
+}
+
+/* Feedback Page Content */
+.feedback-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box; /* Ensure no extra padding/spacing */
+  overflow: hidden;
+}
+
+.feedback-page h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Feedback Form */
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Input fields in feedback form */
+.feedback-form input,
+.feedback-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.feedback-form button {
+  padding: 10px;
+  background-color: green;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.feedback-form button:hover {
+  background-color: darkgreen;
+}
