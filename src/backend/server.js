@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 const LoginDB = mysql.createConnection({
     host:"localhost",
     user:"root",
-    password:"gun@SQL@25", // provide your own password
+    password:"", // provide your own password
     database:"SaferiLogin",
 });
 
