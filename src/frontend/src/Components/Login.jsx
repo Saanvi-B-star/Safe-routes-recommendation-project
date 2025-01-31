@@ -5,11 +5,40 @@ import axios from "axios";
 
 const Login = () => {
 //   const navigate = useNavigate();
+    const [errorName,setErrorName] = useState("");  
+    const [errorEmergencyContact,setErrorEmergencyContact] = useState("");  
     const [name,setName] = useState("");
     const [email,setEmail] = useState("");
     const [age,setAge] = useState("");
     const [gender,setGender] = useState("");
     const [emergencyContact,setEmergencyContact] = useState("");
+
+    const checkName = (e) =>
+    {
+      if (/^[A-Za-z]*$/.test(e.target.value)) 
+      {
+        setName(e.target.value);
+        setErrorName(""); // Clear error if input is valid
+      } 
+      else 
+      {
+        setErrorName("Only alphabets are allowed!");
+      }
+    }
+
+    const checkEmergencyContact = (e)=>
+    {
+      const value = e.target.value;
+      if (/^[0-9]*$/.test(value)) 
+      {
+        setEmergencyContact(value);
+        setErrorEmergencyContact("");
+      } 
+      else 
+      {
+        setErrorEmergencyContact("Only numbers are allowed!");
+      }
+    }
 
   const handleSubmit = async(e) =>
     {
@@ -23,6 +52,7 @@ const Login = () => {
         {
             alert("Registration failed : " + err.response.data.error);
         }
+        // console.log("submiitted");
     };
 
   return (
@@ -34,9 +64,10 @@ const Login = () => {
           name="name"
           placeholder="Name"
           value={name}
-          onChange={(e)=>setName(e.target.value)}
+          onChange={checkName}
           required
         />
+        {errorName && <p style={{ color: "red" }}>{errorName}</p>} {/* Show error message */}
         <input
           type="email"
           name="email"
@@ -51,24 +82,36 @@ const Login = () => {
           placeholder="Age"
           value={age}
           onChange={(e)=>setAge(e.target.value)}
+          min={1}
+          max={100}
           required
         />
-        <input
+        {/* <input
           type="text"
           name="gender"
           placeholder="Gender"
           value={gender}
           onChange={(e)=>setGender(e.target.value)}
           required
-        />
+        /> */}
+      <select className="selectGender" value={gender} onChange={(e)=>setGender(e.target.value)} required>
+        {/* <option value="">-- Select --</option> Placeholder */}
+        <option value="" disabled hidden>Select Gender</option> {/* Acts as a placeholder */}
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
         <input
-          type="tel"
+          type="text"
           name="emergencyContact"
           placeholder="Emergency Contact"
           value={emergencyContact}
-          onChange={(e)=>setEmergencyContact(e.target.value)}
+          onChange={checkEmergencyContact}
+          minLength={10}
+          maxLength={10}
           required
         />
+        {errorEmergencyContact && <p style={{ color: "red" }}>{errorEmergencyContact}</p>} {/* Show error message */}
         <button type="submit">Submit</button>
       </form>
     </div>
