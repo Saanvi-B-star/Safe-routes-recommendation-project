@@ -1,63 +1,68 @@
-// connecting the required dependencies to the backend
-// import express from "express";
-// import mysql from "mysql2";
-// import cors from "cors";
-// import bodyParser from "body-parser";
 const express = require("express");
-const mysql = require("mysql2");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+require('dotenv').config();
 
-// express setup
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// mysql database connection
-const LoginDB = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"", // provide your own password
-    database:"SaferiLogin",
-});
+const mysql = require('mysql2/promise');
 
-// mysql connection check
-LoginDB.connect((err) =>{
-    if(err)
-    {
-        console.log("Database connection error: ",err);
-        process.exit(1);
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,  
+    port: process.env.DB_PORT,  
+    user: process.env.DB_USER,  
+    password: process.env.DB_PASSWORD,  
+    database: process.env.DB_NAME,  
+    ssl: { rejectUnauthorized: false }
+  });
+
+// Test the connection
+const testConnection = async () => {
+  try {
+    const connection = await pool.getConnection();
+    console.log('Successfully connected to Aiven MySQL database');
+    
+    // Create table if it doesn't exist
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS LoginData (
+        Name TEXT NOT NULL,
+        Email VARCHAR(255) NOT NULL PRIMARY KEY,
+        Age INT CHECK(Age>0) NOT NULL,
+        Gender TEXT NOT NULL,
+        Emergency_Contact TEXT NOT NULL
+      )
+    `);
+    
+    connection.release();
+  } catch (err) {
+    console.error('Database connection error:', err);
+    process.exit(1);
+  }
+};
+
+testConnection();
+
+app.post("/login", async (request, response) => {
+    try {
+        const {name, email, age, gender, emergencyContact} = request.body;
+        const connection = await pool.getConnection();
+        
+        await connection.query(
+            'INSERT INTO LoginData (Name, Email, Age, Gender, Emergency_Contact) VALUES (?, ?, ?, ?, ?)',
+            [name, email, age, gender, emergencyContact]
+        );
+        
+        connection.release();
+        console.log("User registered successfully");
+        response.status(201).json({ message: "User registered successfully" });
+    } catch (err) {
+        console.error("Error inserting user:", err);
+        response.status(500).json({ error: err.message });
     }
-    else 
-    {
-        console.log("Connected to Mysql Database");
-    }
 });
 
-// registering user
-// app.post sends a request of data to the url /login to store the data in the database 
-// request : contains the data that is send from the client (eg : user data)
-// response : object that allows the serveer to send the a response back to the client
-app.post("/login",async (request,response) => {
-    const {name , email , age , gender , emergencyContact} = request.body; // to extract the user details from the frontend form
-
-    // firing and checking the sql query
-    LoginDB.query(
-        "INSERT INTO LoginData (Name , Email , Age , Gender , Emergency_Contact) VALUES (? , ? , ? , ? , ?)",
-        [name , email , age , gender , emergencyContact],
-        (err, result) => {
-            if(err)
-            {
-                console.log("Error : "+err);
-                return response.status(500).json({error:err});
-            }
-            console.log("Successful login");
-            response.status(201).json({message: "User registered successfully"});
-        }
-    );
-});
-
-//starting the server
-app.listen(5000, ()=>{
-    console.log("Server running  on port 5000");
+app.listen(5001, () => {
+    console.log("Server running on port 5001");
 });
