@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../Style/Login.css";
 import axios from "axios";
 
 const Login = () => {
-//   const navigate = useNavigate();
+    const navigate = useNavigate();
     const [errorName,setErrorName] = useState("");  
     const [errorEmergencyContact,setErrorEmergencyContact] = useState("");  
     const [name,setName] = useState("");
@@ -47,6 +47,7 @@ const Login = () => {
         {
             const res = await axios.post("http://localhost:5000/login", {name, email , age , gender , emergencyContact});
             alert(res.data.message);
+            navigate("/home");
         }
         catch(err)
         {
