@@ -1,9 +1,12 @@
 import React,{useState , useEffect , useCallback} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "../Style/Home.css";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
+  const navigate = useNavigate();
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [map, setMap] = useState(null);
@@ -143,10 +146,15 @@ const Home = () => {
     }
   }, [startLocation, endLocation, map, displayRoutes]);
 
+  const directFeedback = () =>
+  {
+    navigate("/feedback");
+  }
+
   return (
     <>
-    <div style={{ width: "100vw", height: "100vh", display: "flex" }}>
-      <div style={{ flex: "1", position: "relative" }}>
+    <div style={{ width: "100vw", height: "100vh", display: "flex" , overflow: "hidden" }}>
+      <div style={{ width: "100vw", height: "100vh" , flex: "1", position: "relative" , overflow: "hidden"}}>
         {/* Input UI */}
         <div
           style={{
@@ -191,7 +199,29 @@ const Home = () => {
         </div>
         
         {/* Map Container */}
-        <div id="map" style={{ width: "100%", height: "100%" }}></div>
+        <div id="map" style={{ width: "100vw", height: "100vh" , overflow: "hidden" }}></div>
+
+        <button
+          onClick={directFeedback}
+          style={{
+            position: "absolute",
+            bottom: "20px",
+            right: "20px",
+            padding: "10px",
+            backgroundColor: "green",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            zIndex: 1000,
+            textAlign: "center",
+            maxWidth: "10vw",
+            margin: "40px"
+          }}
+        >
+          End Journey
+        </button>
 
         {/* Route Information Panel */}
         {routes.length > 0 && (
@@ -250,6 +280,7 @@ const Home = () => {
         )}
       </div>
     </div>
+    {/* <button className="EndJourneyBtn">End Journey</button> */}
     </>
   );
 };
