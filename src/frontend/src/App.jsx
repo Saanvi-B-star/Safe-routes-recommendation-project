@@ -1,7 +1,7 @@
 import React from "react";
 // import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Components/Login";
-// import Home from "./Components/Home";
+// import Login from "./Components/Login";
+import Home from "./Components/Home";
 // import Feedback from "./Components/Feedback";
 
 function App() {
@@ -14,7 +14,8 @@ function App() {
     //   </Routes>
     // </Router>
     <div>
-      <Login/>
+      {/* <Login/> */}
+      <Home/>
     </div>
   );
 }
