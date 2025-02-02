@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
 
   const navigate = useNavigate();
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [map, setMap] = useState(null);
@@ -146,10 +147,21 @@ const Home = () => {
     }
   }, [startLocation, endLocation, map, displayRoutes]);
 
-  const directFeedback = () =>
+  const handleEndJourneyClick = () => 
   {
-    navigate("/feedback");
-  }
+    setShowConfirmation(true); // Show the confirmation box
+  };
+
+  const handleConfirmYes = () => 
+  {
+    setShowConfirmation(false);
+    navigate("/feedback"); // Navigate to feedback page
+  };
+
+  const handleConfirmNo = () => 
+  {
+    setShowConfirmation(false);
+  };
 
   return (
     <>
@@ -200,16 +212,72 @@ const Home = () => {
         
         {/* Map Container */}
         <div id="map" style={{ width: "100vw", height: "100vh" , overflow: "hidden" }}></div>
-
         <button
-          onClick={directFeedback}
+          // onClick={handleEndJourneyClick}
           style={{
             position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             bottom: "20px",
             right: "20px",
             padding: "10px",
-            backgroundColor: "green",
+            backgroundColor: "white",
             color: "white",
+            border: "none",
+            borderRadius: "50%",
+            cursor: "pointer",
+            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+            textAlign: "center",
+            maxWidth: "4vw",
+            height: "4vw",
+            marginBottom: "160px",
+            marginRight: "85px"
+          }}
+        >
+          <i class="fa-solid fa-phone" style={{ fontSize: '1.75rem', marginLeft: '25px', color: 'green'}}></i>
+        </button>
+
+        <button
+          // onClick={handleEndJourneyClick}
+          style={{
+            position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bottom: "20px",
+            right: "20px",
+            padding: "10px",
+            backgroundColor: "white",
+            color: "white",
+            border: "none",
+            borderRadius: "50%",
+            cursor: "pointer",
+            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.5)",
+            zIndex: 1000,
+            textAlign: "center",
+            maxWidth: "4vw",
+            height: "4vw",
+            marginBottom: "90px",
+            marginRight: "85px"
+          }}
+        >
+          <i class="fa-solid fa-bell" style={{ fontSize: '1.75rem', marginLeft: '25px', color: 'red'}}></i>
+        </button>
+
+        <button
+          onClick={handleEndJourneyClick}
+          style={{
+            position: "absolute",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            bottom: "20px",
+            right: "20px",
+            padding: "10px",
+            backgroundColor: "rgb(43, 96, 174)",
+            color: "black",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
@@ -222,6 +290,36 @@ const Home = () => {
         >
           End Journey
         </button>
+          {/* Confirmation Box (Shows Over the Button) */}
+      {showConfirmation && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "60px", // Just above the button
+            right: "20px",
+            background: "white",
+            padding: "10px",
+            borderRadius: "5px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            zIndex: 1001,
+            textAlign: "center",
+          }}
+        >
+          <p>Do you want to end the journey?</p>
+          <button
+            onClick={handleConfirmYes}
+            style={{ marginRight: "10px", padding: "5px", backgroundColor: "red", color: "white", border: "none" }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={handleConfirmNo}
+            style={{ padding: "5px", backgroundColor: "gray", color: "white", border: "none" }}
+          >
+            No
+          </button>
+        </div>
+      )}
 
         {/* Route Information Panel */}
         {routes.length > 0 && (
