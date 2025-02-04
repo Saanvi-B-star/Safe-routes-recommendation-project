@@ -1,8 +1,9 @@
 import React,{useState , useEffect , useCallback} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "../Style/Home.css";
 import { useNavigate } from "react-router-dom";
+import SOSmsg from "./SOSmsg";
+import SOScall from "./SOScall";
 
 const Home = () => {
 
@@ -171,36 +172,49 @@ const Home = () => {
         <div
           style={{
             position: "absolute",
-            top: "10px",
-            left: "50%",
-            transform: "translateX(-50%)",
+            width: "20vw" ,
+            height: "100vh" ,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            // justifyContent: "center",
             background: "white",
-            padding: "10px",
-            borderRadius: "5px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
-            zIndex: 1000,
+            zIndex: "1000"
+            // position: "absolute",
+            // top: "10px",
+            // left: "50%",
+            // transform: "translateX(-50%)",
+            // background: "white",
+            // padding: "10px",
+            // borderRadius: "5px",
+            // boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            // zIndex: 1000,
           }}
         >
           <input
             type="text"
             placeholder="Start Location"
+            name="startLocation"
             value={startLocation}
             onChange={(e) => setStartLocation(e.target.value)}
-            style={{ marginRight: "10px", padding: "5px" }}
+            style={{ marginTop: "15vh" , width: "16vw" , height: "1vh" , backgroundColor: "white" ,color: "black" ,border: "2px solid black" , opacity:"1"}}
           />
           <input
             type="text"
             placeholder="End Location"
+            name="endLocation"
             value={endLocation}
             onChange={(e) => setEndLocation(e.target.value)}
-            style={{ marginRight: "10px", padding: "5px" }}
+            style={{ marginTop: "1vh" , width: "16vw" , height: "1vh" , backgroundColor: "white" ,color: "black" ,border: "2px solid black" , opacity:"1"}}
           />
           <button 
             onClick={handleShowRoute}
             style={{ 
               padding: "5px 10px",
-              backgroundColor: "#2ecc71",
-              color: "white",
+              width: "10vw",
+              height: "5vh",
+              backgroundColor: "#007bff",
+              color: "black",
               border: "none",
               borderRadius: "3px",
               cursor: "pointer"
@@ -212,59 +226,9 @@ const Home = () => {
         
         {/* Map Container */}
         <div id="map" style={{ width: "100vw", height: "100vh" , overflow: "hidden" }}></div>
-        <button
-          // onClick={handleEndJourneyClick}
-          style={{
-            position: "absolute",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            bottom: "20px",
-            right: "20px",
-            padding: "10px",
-            backgroundColor: "white",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            cursor: "pointer",
-            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.5)",
-            zIndex: 1000,
-            textAlign: "center",
-            maxWidth: "4vw",
-            height: "4vw",
-            marginBottom: "160px",
-            marginRight: "85px"
-          }}
-        >
-          <i class="fa-solid fa-phone" style={{ fontSize: '1.75rem', marginLeft: '25px', color: 'green'}}></i>
-        </button>
+        <SOSmsg/>
 
-        <button
-          // onClick={handleEndJourneyClick}
-          style={{
-            position: "absolute",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            bottom: "20px",
-            right: "20px",
-            padding: "10px",
-            backgroundColor: "white",
-            color: "white",
-            border: "none",
-            borderRadius: "50%",
-            cursor: "pointer",
-            boxShadow: "0px 10px 30px rgba(0, 0, 0, 0.5)",
-            zIndex: 1000,
-            textAlign: "center",
-            maxWidth: "4vw",
-            height: "4vw",
-            marginBottom: "90px",
-            marginRight: "85px"
-          }}
-        >
-          <i class="fa-solid fa-bell" style={{ fontSize: '1.75rem', marginLeft: '25px', color: 'red'}}></i>
-        </button>
+        <SOScall/>
 
         <button
           onClick={handleEndJourneyClick}
@@ -276,16 +240,18 @@ const Home = () => {
             bottom: "20px",
             right: "20px",
             padding: "10px",
-            backgroundColor: "rgb(43, 96, 174)",
+            // backgroundColor: "#00b4d8",
+            backgroundColor: "#007bff",
             color: "black",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.5)",
             zIndex: 1000,
             textAlign: "center",
             maxWidth: "10vw",
-            margin: "40px"
+            margin: "15px",
+            marginRight: "5px"
           }}
         >
           End Journey

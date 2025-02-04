@@ -3,13 +3,21 @@ import { Link } from "react-router-dom";
 import "../Style/Navbar.css";
 
 const Navbar = () => {
+  
+  const scrollToAbout = () => 
+  {
+    document.getElementById("about-section").scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav className="navbar">
-      <ul>
-        <li><Link to="/">Login</Link></li>
-        <li><Link to="/home">Home</Link></li>
-        <li><Link to="/feedback">Feedback</Link></li>
-      </ul>
+      <div className="logo_name">
+        <div className="logo"></div>
+      </div>
+      <div className="sections">
+        <Link to="/" onClick={scrollToAbout}>About</Link>
+        <Link to="/signUp">Sign Up</Link>
+      </div>
     </nav>
   );
 };

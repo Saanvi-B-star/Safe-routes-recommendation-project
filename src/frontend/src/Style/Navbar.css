@@ -1,18 +1,43 @@
-.navbar {
+.navbar
+{
+  min-height: 8vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
   display: flex;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 15px;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  position: fixed;
+  top: 0;         
+  left: 0;
+  padding: 10px 20px;
 }
 
-.navbar ul {
-  list-style: none;
-  display: flex;
-  gap: 20px;
+.logo
+{
+  margin-left: -5vh;
+  height: 8vh;
+  width: 20vw;
+  background : url("../assets/Saferi-removebg-preview.png") no-repeat center center/cover;
 }
 
-.navbar a {
-  color: white;
-  text-decoration: none;
-  font-size: 18px;
+.sections
+{
+  margin-right: 10vh;
+}
+
+.sections a 
+{
+    text-decoration: none; 
+    color: white; 
+    padding: 10px 15px; 
+    transition: background-color 0.3s, border-bottom 0.3s;  
+    border-bottom: 2px solid transparent; 
+
+}
+
+.sections a:hover 
+{
+  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid #007bff; 
 }
