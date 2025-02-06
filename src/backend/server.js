@@ -44,25 +44,77 @@ const testConnection = async () => {
 
 testConnection();
 
-app.post("/login", async (request, response) => {
-    try {
-        const {name, email, age, gender, emergencyContact} = request.body;
-        const connection = await pool.getConnection();
-        
-        await connection.query(
-            'INSERT INTO LoginData (Name, Email, Age, Gender, Emergency_Contact) VALUES (?, ?, ?, ?, ?)',
-            [name, email, age, gender, emergencyContact]
-        );
-        
-        connection.release();
-        console.log("User registered successfully");
-        response.status(201).json({ message: "User registered successfully" });
-    } catch (err) {
-        console.error("Error inserting user:", err);
-        response.status(500).json({ error: err.message });
-    }
+app.post("/signup", async (req, res) => {
+  try {
+      const { name, email, age, gender, emergencyContact } = req.body;
+      const connection = await pool.getConnection();
+
+      // Check if email already exists
+      const [rows] = await connection.query('SELECT * FROM LoginData WHERE Email = ?', [email]);
+
+      if (rows.length > 0) {
+          connection.release();
+          return res.status(400).json({ error: "Email already exists. Please login instead." });
+      }
+
+      // Insert new user
+      await connection.query(
+          'INSERT INTO LoginData (Name, Email, Age, Gender, Emergency_Contact) VALUES (?, ?, ?, ?, ?)',
+          [name, email, age, gender, emergencyContact]
+      );
+
+      connection.release();
+      console.log("User registered successfully");
+      res.status(201).json({ message: "User registered successfully" });
+
+  } catch (err) {
+      console.error("Error inserting user:", err);
+      res.status(500).json({ error: err.message });
+  }
+});
+
+// ✅ **LOGIN Route (Check if User Exists)**
+app.post("/login", async (req, res) => {
+  try {
+      const { email , password} = req.body;
+      const connection = await pool.getConnection();
+
+      // Check if user exists
+      const [users] = await connection.query('SELECT * FROM LoginData WHERE Email = ?', [email]);
+
+      connection.release();
+
+      if (users.length === 0) {
+          return res.status(404).json({ error: "Email not found. Please sign up first." });
+      }
+
+        res.json({ message: "Login successful" });
+
+  } catch (err) {
+      console.error("Error checking login:", err);
+      res.status(500).json({ error: err.message });
+  }
 });
 
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
+
+// app.post("/login", async (request, response) => {
+//     try {
+//         const {name, email, age, gender, emergencyContact} = request.body;
+//         const connection = await pool.getConnection();
+        
+//         await connection.query(
+//             'INSERT INTO LoginData (Name, Email, Age, Gender, Emergency_Contact) VALUES (?, ?, ?, ?, ?)',
+//             [name, email, age, gender, emergencyContact]
+//         );
+        
+//         connection.release();
+//         console.log("User registered successfully");
+//         response.status(201).json({ message: "User registered successfully" });
+//     } catch (err) {
+//         console.error("Error inserting user:", err);
+//         response.status(500).json({ error: err.message });
+//     }
+// });

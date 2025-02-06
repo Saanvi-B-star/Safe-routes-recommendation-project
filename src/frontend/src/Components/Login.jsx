@@ -5,13 +5,8 @@ import axios from "axios";
 
 const Login = () => {
     const navigate = useNavigate();
-    const [errorName,setErrorName] = useState("");  
-    const [errorEmergencyContact,setErrorEmergencyContact] = useState("");  
-    const [name,setName] = useState("");
     const [email,setEmail] = useState("");
-    const [age,setAge] = useState("");
-    const [gender,setGender] = useState("");
-    const [emergencyContact,setEmergencyContact] = useState("");
+    // const [password,setPassword] = useState("");
 
     const checkName = (e) =>
     {
@@ -26,49 +21,45 @@ const Login = () => {
       }
     }
 
-    const checkEmergencyContact = (e)=>
-    {
-      const value = e.target.value;
-      if (/^[0-9]*$/.test(value)) 
-      {
-        setEmergencyContact(value);
-        setErrorEmergencyContact("");
-      } 
-      else 
-      {
-        setErrorEmergencyContact("Only numbers are allowed!");
-      }
-    }
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-  const handleSubmit = async(e) =>
-    {
-        e.preventDefault();
-        try
-        {
-            const res = await axios.post("http://localhost:5000/login", {name, email , age , gender , emergencyContact});
-            alert(res.data.message);
-            navigate("/home");
-        }
-        catch(err)
-        {
-            alert("Registration failed : " + err.response.data.error);
-        }
-        // console.log("submiitted");
-    };
+      try {
+          const res = await axios.post("http://localhost:5000/login", { email });
+
+          alert(res.data.message); // Show success message
+          navigate("/home"); // Redirect to home page
+
+      } catch (err) {
+          if (err.response && err.response.status === 404) {
+              alert("Email not found. Please sign up first.");
+              navigate("/signUp");
+          } else {
+              alert("Login failed: " + (err.response?.data?.error || "Unknown error"));
+          }
+      }
+  };
+
+    // const handleSubmit = async(e) =>
+    // {
+    //     e.preventDefault();
+    //     try
+    //     {
+    //         const res = await axios.post("http://localhost:5000/login", {email});
+    //         alert(res.data.message);
+    //         navigate("/home");
+    //     }
+    //     catch(err)
+    //     {
+    //         alert("Registration failed : " + err.response.data.error);
+    //     }
+    //     // console.log("submiitted");
+    // };
 
   return (
     <div className="login-container">
-      <h2>Sign Up</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={name}
-          onChange={checkName}
-          required
-        />
-        {errorName && <p style={{ color: "red" }}>{errorName}</p>} {/* Show error message */}
         <input
           type="email"
           name="email"
@@ -77,42 +68,15 @@ const Login = () => {
           onChange={(e)=>setEmail(e.target.value)}
           required
         />
-        <input
-          type="number"
-          name="age"
-          placeholder="Age"
-          value={age}
-          onChange={(e)=>setAge(e.target.value)}
-          min={1}
-          max={100}
-          required
-        />
         {/* <input
-          type="text"
-          name="gender"
-          placeholder="Gender"
-          value={gender}
-          onChange={(e)=>setGender(e.target.value)}
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e)=>{setPassword(e.target.value)}}
+          minLength={8}
           required
         /> */}
-      <select className="selectGender" value={gender} onChange={(e)=>setGender(e.target.value)} required>
-        {/* <option value="">-- Select --</option> Placeholder */}
-        <option value="" disabled hidden>Select Gender</option> {/* Acts as a placeholder */}
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-        <input
-          type="text"
-          name="emergencyContact"
-          placeholder="Emergency Contact"
-          value={emergencyContact}
-          onChange={checkEmergencyContact}
-          minLength={10}
-          maxLength={10}
-          required
-        />
-        {errorEmergencyContact && <p style={{ color: "red" }}>{errorEmergencyContact}</p>} {/* Show error message */}
         <button type="submit" style={{backgroundColor: "#007bff"}}>Submit</button>
       </form>
     </div>
