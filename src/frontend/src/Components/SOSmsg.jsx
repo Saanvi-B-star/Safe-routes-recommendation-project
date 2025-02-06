@@ -1,10 +1,35 @@
 import React from 'react'
 
 const SOSmsg = () => {
+  const handleSOSClick = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/send-sms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: "Save me!! Please help me as soon as possible, I'm in danger",
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("SOS Message Sent:", data);
+      } else {
+        console.error("Failed to send SOS message:", data);
+      }
+    } catch (error) {
+      console.error("Error sending SOS message:", error);
+    }
+  };
+
+
   return (
     <div>
         <button
           // onClick={handleEndJourneyClick}
+          onClick={handleSOSClick}
           style={{
             position: "absolute",
             display: "flex",
