@@ -1,7 +1,7 @@
 .container
 {
     position: fixed;
-    top:5vh;
+    top:0vh;
     left: 20vw;
     height: 100vh;
     width: 60vw;
@@ -9,7 +9,33 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap : 4vh;
+}
+
+.typing-content
+{
+    font-size: 8vh;
+    border-right: 2px solid white;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 7s steps(22), blink 0.7s infinite;
+    animation-iteration-count: infinite;
+}
+
+@keyframes typing
+{
+    0% { width: 0; }
+    80% { width: 40vw; } /* Text fully appears */
+    90% { width: 40vw; } /* Pause before reset */
+    100% { width: 0; } /* Reset to empty */
+}
+
+@keyframes blink 
+{
+    50%
+    {
+        border-color: transparent;
+    }    
 }
 
 .stJourney
