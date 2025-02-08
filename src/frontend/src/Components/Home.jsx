@@ -1,10 +1,13 @@
-import React,{useState , useEffect , useCallback} from "react";
+import React,{useState , useEffect , useCallback , useRef} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "../Style/Home.css";
 import { useNavigate } from "react-router-dom";
 import SOSmsg from "./SOSmsg";
 import SOScall from "./SOScall";
+import axios from "axios";
+import alertImage from "../assets/alert.png"
+
 
 const Home = () => {
 
@@ -21,6 +24,8 @@ const Home = () => {
   const [map, setMap] = useState(null);
   const [routes, setRoutes] = useState([]);
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [alerts, setAlerts] = useState([]);
+  const markersRef = useRef([]);
 
   // Replace with your GraphHopper API key
   const GRAPHHOPPER_API_KEY = '4aa9aa6b-7da2-46bc-b678-ef0a4202d618';
@@ -170,6 +175,108 @@ const Home = () => {
   {
     setShowConfirmation(false);
   };
+
+  ///////////////////////////////////////////////////////////////////////
+  // const fetchAlerts = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:5000/get-alerts");
+  //     setAlerts(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching alerts:", error);
+  //   }
+  // };
+
+  // const fetchAlerts = () => {
+  //   axios
+  //     .get("http://localhost:5000/get-alerts")
+  //     .then((response) => {
+  //       setAlerts(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching alerts:", error);
+  //     });
+  // };
+
+  // // Fetch alerts immediately & set interval for continuous updates
+  // useEffect(() => {
+  //   fetchAlerts(); // Fetch initially
+  //   // const interval = setInterval(fetchAlerts, 2000); 
+
+  //   return () => clearInterval(interval); // Cleanup interval on unmount
+  // }, []);
+
+  // // Update map markers whenever alerts change
+  // useEffect(() => {
+  //   if (map && alerts.length > 0) {
+  //     // console.log(alerts);
+  //     // Remove previous markers
+  //     markersRef.current.forEach((marker) => map.removeLayer(marker));
+  //     markersRef.current = [];
+
+  //     // Add new markers
+  //     alerts.forEach((alert) => {
+  //       console.log(alert.latitude , alert.longitude);
+  //       if (!alert.latitude || !alert.longitude) return;
+
+  //       const customIcon = L.icon({
+  //         iconUrl: "/alert.png",
+  //         iconSize: [40, 40],
+  //         iconAnchor: [16, 32],
+  //         popupAnchor: [0, -32],
+  //       });
+
+  //       const marker = L.marker([alert.latitude, alert.longitude], { icon: customIcon }).addTo(map);
+  //       markersRef.current.push(marker);
+  //     });
+  //   }
+  // }, [map, alerts]);
+
+  const fetchAlerts = () => {
+    axios.get("http://localhost:5000/get-alerts")
+      .then((response) => {
+        updateMapMarkers(response.data); // Call function to update markers
+      })
+      .catch((error) => {
+        console.error("Error fetching alerts:", error);
+      });
+  };
+
+  // Function to update map markers
+  const updateMapMarkers = (newAlerts) => {
+    if (!map) return;
+    // console.log(newAlerts);
+    // Remove old markers
+    markersRef.current.forEach((marker) => map.removeLayer(marker));
+    markersRef.current = [];
+
+    // Add new markers
+    newAlerts.forEach((alert) => {
+      console.log(alert.Latitude , alert.Longitude);
+      if (!alert.Latitude || !alert.Longitude) return; // Ensure valid coordinates
+
+      const customIcon = L.icon({
+        iconUrl: alertImage,
+        // iconSize: [40, 40],
+        // iconAnchor: [16, 32],
+        // popupAnchor: [0, -32],
+        iconSize: [40, 40],
+        iconAnchor: [-40, 40],  // Adjust anchor so image appears correctly
+        popupAnchor: [0, -45],
+      });
+
+      const marker = L.marker([alert.Latitude, alert.Longitude], { icon: customIcon }).addTo(map).bindPopup(alert.Issue);
+      // marker.bindTooltip("", { permanent: false });
+      marker.bindTooltip(alert.Issue || "Alert!", { 
+        permanent: true, 
+        direction: "top"
+        // className: "custom-tooltip" 
+      });
+      markersRef.current.push(marker);
+    });
+  };
+
+  // Set up manual interval (triggered outside of useEffect)
+  setInterval(fetchAlerts, 2000);
 
   return (
     <>

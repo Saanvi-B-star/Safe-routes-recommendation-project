@@ -202,6 +202,17 @@ app.post("/feedback", async (req, res) => {
   }
 });
 
+app.get("/get-alerts", async (req, res) => {
+  try {
+      const [rows] = await pool.query("SELECT Latitude, Longitude, Issue FROM Feedback");
+      res.status(200).json(rows);
+  } catch (error) {
+      console.error("Error fetching alerts:", error);
+      res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+
 // ✅ **LOGIN Route (Check if User Exists)**
 app.post("/login", async (req, res) => {
   try {
