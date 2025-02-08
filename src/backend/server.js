@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const twilio = require("twilio");
+const axios = require("axios");
 require('dotenv').config();
 
 const app = express();
@@ -59,6 +60,16 @@ const testConnection = async () => {
         Emergency_Contact TEXT NOT NULL
       )
     `);
+
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS Feedback (
+		    Id INT AUTO_INCREMENT PRIMARY KEY,
+        Issue TEXT NOT NULL,
+        Location TEXT,
+        Latitude FLOAT,
+        Longitude FLOAT
+      )
+    `);
     
     connection.release();
   } catch (err) {
@@ -98,6 +109,99 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+// app.post("/feedback", async (req, res) => {
+//   try {
+//       const { issue , location , issueType } = req.body;
+//       const connection = await pool.getConnection();
+
+//       if(issue==="yes")
+//       {
+//         // Insert feedback
+//         await connection.query(
+//           'INSERT INTO Feedback (Issue , Location) VALUES (?, ?)',
+//           [issueType , location]
+//         );
+
+//         try {
+//           // OpenStreetMap Nominatim API request
+//           const response = await axios.get(
+//             `https://nominatim.openstreetmap.org/search?format=json&q=${location}`
+//           );
+      
+//           if (response.data.length !== 0) {
+//             const { lat, lon } = response.data[0];
+//             res.json({ latitude: parseFloat(lat), longitude: parseFloat(lon) });
+//             console.log(lat);
+//             console.log(lon);
+//             const latitude = parseFloat(lat);
+//             const longitude = parseFloat(lon);
+//             await connection.query(
+//               'INSERT INTO Feedback (Latitude , Longitude) VALUES (?, ?) WHERE Location=${location}',
+//               [latitude , longitude]
+//             );
+//           }
+      
+          
+//         } catch (error) {
+//           console.error("Error fetching coordinates:", error);
+//           res.status(500).json({ error: "Internal Server Error" });
+//         }
+
+//         connection.release();
+//         console.log("User registered successfully");
+//         res.status(201).json({ message: "User registered successfully" });
+
+//       } 
+//       }
+//       catch (err) {
+//         console.error("Error inserting user:", err);
+//         res.status(500).json({ error: err.message });
+//     }
+// });
+
+app.post("/feedback", async (req, res) => {
+  try {
+    const { issue, location, issueType } = req.body;
+    const connection = await pool.getConnection();
+
+    if (issue === "yes") {
+      // OpenStreetMap Nominatim API request to get latitude & longitude
+      let latitude = null;
+      let longitude = null;
+
+      try {
+        const response = await axios.get(
+          `https://nominatim.openstreetmap.org/search?format=json&q=${location}`
+        );
+
+        if (response.data.length !== 0) {
+          latitude = parseFloat(response.data[0].lat);
+          longitude = parseFloat(response.data[0].lon);
+        }
+      } catch (error) {
+        console.error("Error fetching coordinates:", error);
+        return res.status(500).json({ error: "Error fetching coordinates" });
+      }
+
+      // Insert feedback along with latitude & longitude
+      await connection.query(
+        `INSERT INTO Feedback (Issue, Location, Latitude, Longitude) VALUES (?, ?, ?, ?)`,
+        [issueType, location, latitude, longitude]
+      );
+
+      connection.release();
+      console.log("Feedback stored successfully");
+      return res.status(201).json({ message: "Feedback stored successfully", latitude, longitude });
+    }
+
+    connection.release();
+    res.status(400).json({ message: "No issue reported" });
+  } catch (err) {
+    console.error("Error inserting feedback:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ✅ **LOGIN Route (Check if User Exists)**
 app.post("/login", async (req, res) => {
   try {
@@ -124,22 +228,3 @@ app.post("/login", async (req, res) => {
 app.listen(5000, () => {
     console.log("Server running on port 5000");
 });
-
-// app.post("/login", async (request, response) => {
-//     try {
-//         const {name, email, age, gender, emergencyContact} = request.body;
-//         const connection = await pool.getConnection();
-        
-//         await connection.query(
-//             'INSERT INTO LoginData (Name, Email, Age, Gender, Emergency_Contact) VALUES (?, ?, ?, ?, ?)',
-//             [name, email, age, gender, emergencyContact]
-//         );
-        
-//         connection.release();
-//         console.log("User registered successfully");
-//         response.status(201).json({ message: "User registered successfully" });
-//     } catch (err) {
-//         console.error("Error inserting user:", err);
-//         response.status(500).json({ error: err.message });
-//     }
-// });
