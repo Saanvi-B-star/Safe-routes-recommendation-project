@@ -1,5 +1,6 @@
 .abtContainer
 {
+    margin-top: -5vh;
     /* background: url("../assets/cityscape.jpg") no-repeat center center/cover;
     backdrop-filter: blur(5px); */
     position: fixed;
@@ -38,4 +39,15 @@
     height: 100vh;
     width: 60vw;
     gap: 4vh;
+}
+
+
+
+.para
+{
+    padding: 20px;
+    height: 30vh;
+    width: 60vw;
+    background-color: rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
 }

@@ -1,11 +1,18 @@
 import React,{useState , useEffect , useCallback} from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "../Style/Home.css";
 import { useNavigate } from "react-router-dom";
 import SOSmsg from "./SOSmsg";
 import SOScall from "./SOScall";
 
 const Home = () => {
+
+//   L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+//     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/">CARTO</a>',
+//     subdomains: 'abcd',
+//     maxZoom: 20
+// }).addTo(map);
 
   const navigate = useNavigate();
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -166,19 +173,22 @@ const Home = () => {
 
   return (
     <>
-    <div style={{ width: "100vw", height: "100vh", display: "flex" , overflow: "hidden" }}>
-      <div style={{ width: "100vw", height: "100vh" , flex: "1", position: "relative" , overflow: "hidden"}}>
+    <div style={{ width: "100vw", height: "100vh", display: "flex" , overflow: "hidden" , backgroundColor:"black"}}>
+      <div style={{ width: "100vw", height: "100vh" , flex: "1", position: "relative" , overflow: "hidden" , backgroundColor:"black"}} >
         {/* Input UI */}
         <div
           style={{
             position: "absolute",
             width: "20vw" ,
-            height: "100vh" ,
+            height: "30vh" ,
+            borderRadius: "20px",
+            margin: "10px 60px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            // justifyContent: "center",
-            background: "white",
+            justifyContent: "center",
+            // background: "white",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
             zIndex: "1000"
             // position: "absolute",
             // top: "10px",
@@ -189,7 +199,7 @@ const Home = () => {
             // borderRadius: "5px",
             // boxShadow: "0 0 10px rgba(0,0,0,0.1)",
             // zIndex: 1000,
-          }}
+          }} className="inputBox"
         >
           <input
             type="text"
@@ -197,7 +207,7 @@ const Home = () => {
             name="startLocation"
             value={startLocation}
             onChange={(e) => setStartLocation(e.target.value)}
-            style={{ marginTop: "15vh" , width: "16vw" , height: "1vh" , backgroundColor: "white" ,color: "black" ,border: "2px solid black" , opacity:"1"}}
+            style={{  width: "16vw" , height: "1vh" , backgroundColor: "rgba(255, 255, 255, 0.7)" ,color: "black" , opacity:"1"}}
           />
           <input
             type="text"
@@ -205,7 +215,7 @@ const Home = () => {
             name="endLocation"
             value={endLocation}
             onChange={(e) => setEndLocation(e.target.value)}
-            style={{ marginTop: "1vh" , width: "16vw" , height: "1vh" , backgroundColor: "white" ,color: "black" ,border: "2px solid black" , opacity:"1"}}
+            style={{ marginTop: "1vh" , width: "16vw" , height: "1vh" , backgroundColor: "rgba(255, 255, 255, 0.7)" ,color: "black" , opacity:"1"}}
           />
           <button 
             onClick={handleShowRoute}
@@ -213,7 +223,7 @@ const Home = () => {
               padding: "5px 10px",
               width: "10vw",
               height: "5vh",
-              backgroundColor: "#007bff",
+              backgroundColor: "#0077b6",
               color: "black",
               border: "none",
               borderRadius: "3px",
@@ -241,7 +251,7 @@ const Home = () => {
             right: "20px",
             padding: "10px",
             // backgroundColor: "#00b4d8",
-            backgroundColor: "#007bff",
+            backgroundColor: "#0077b6",
             color: "black",
             border: "none",
             borderRadius: "5px",

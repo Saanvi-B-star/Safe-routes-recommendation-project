@@ -1,3 +1,5 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap');
+
 .container
 {
     position: fixed;
@@ -9,6 +11,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family:  "Playfair", serif ;
 }
 
 .typing-content
@@ -18,16 +21,16 @@
     white-space: nowrap;
     overflow: hidden;
     width: 0;
-    animation: typing 7s steps(22), blink 0.7s infinite;
+    animation: typing 5s steps(22), blink 0.7s infinite;
     animation-iteration-count: infinite;
 }
 
 @keyframes typing
 {
     0% { width: 0; }
-    80% { width: 40vw; } /* Text fully appears */
-    90% { width: 40vw; } /* Pause before reset */
-    100% { width: 0; } /* Reset to empty */
+    80% { width: 45vw; } 
+    90% { width: 45vw; } 
+    100% { width: 0; } 
 }
 
 @keyframes blink 
@@ -42,24 +45,191 @@
 {
     width: 10vw;
     background-color: transparent;
-    border: 2px solid #007bff;     
-    border-radius: 8px;         
+    border: 2px solid #0077b6;     
+    border-radius: 1vh;         
     color: black;
     padding: 10px 20px;           
-    font-size: 16px;              
+    font-size: 3vh;              
     cursor: pointer;               
     transition: background-color 0.3s, color 0.3s; 
     padding: 10px 20px;
-
+    font-family: "Playfair", serif ;
 }
 
 .stJourney:hover
 {
-    background-color: #007bff;
-    color: black;                 
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+    background-color: rgba(255, 255, 255, 0.651);
 }
 
 .container a
 {
     text-decoration: none;
+    font-family:  "Playfair", serif ;
+} */
+
+
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap');
+
+.container {
+    position: fixed;
+    top: 0;
+    /* left: 10%;  */
+    height: 100vh;
+    width: 80%;  /* More flexible width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "Playfair", serif;
+    text-align: center; /* Center text for smaller screens */
+    padding: 5vw; /* Prevents text from touching the edges */
+}
+
+.paragraph
+{
+    font-size: 40px;
+    color: #1D3557;
+    font-weight: bold;
+    margin-top: -4vh;
+}
+.typing-content {
+    font-size: 6vw; /* Use vw for scalable font size */
+    border-right: 2px solid white;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 5s steps(22), blink 0.7s infinite;
+    animation-iteration-count: infinite;
+}
+
+@keyframes typing {
+    0% { width: 0; }
+    80% { width: 60%; } /* Adjust width dynamically */
+    90% { width: 60%; } /* Pause before reset */
+    100% { width: 0; } /* Reset */
+}
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+.stJourney {
+    width: 20%; /* Relative width */
+    min-width: 120px; /* Ensures button doesn't get too small */
+    background-color: transparent;
+    border: 2px solid #0077b6;
+    border-radius: 1vh;
+    color: black;
+    padding: 10px 20px;
+    font-size: 2.5vh; /* Adjust size dynamically */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: "Playfair", serif;
+    text-align: center;
+}
+
+.stJourney:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
+    background-color: rgba(255, 255, 255, 0.651);
+}
+
+.container a
+{
+    text-decoration: none;
+}
+
+.heading 
+{
+    font-size: 10vh;
+    color: #0077b6;
+    font-family: 'Playfair Display', serif; 
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+    .container {
+        left: 5%;
+        width: 90%;
+    }
+
+    .typing-content {
+        font-size: 4vh; /* Further reduce size for mobile */
+        width: 20%;
+    }
+
+    .stJourney {
+        width: 30%; /* Adjust button width */
+        font-size: 2vh;
+    }
+
+    .paragraph
+    {
+        font-size: 20px;
+    }
+    .heading 
+    {
+        font-size: 10vh;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+
+    .typing-content {
+        font-size: 4vh; /* Further reduce size for mobile */
+        width: 20%;
+    }
+
+    .stJourney {
+        width: 50%; /* Larger button for mobile */
+        font-size: 2vh;
+        padding: 10px;
+    }
+    .paragraph
+    {
+        font-size: 15px;
+    }
+    .heading 
+    {
+        font-size: 8vh;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        width: 100%;
+        padding: 5%;
+    }
+
+    .typing-content {
+        font-size: 2vh;
+        width: 10%;
+    }
+
+    .stJourney {
+        width: 60%;
+        font-size: 2vh;
+        padding: 12px;
+    }
+    .paragraph
+    {
+        font-size: 10px;
+    }
+    .heading 
+    {
+        font-size: 6vh;
+        color: #0077b6;
+        font-family: 'Playfair Display', serif; 
+        font-style: italic;
+    }
 }

@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lora:ital,wght@0,400..700;1,400..700&family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&display=swap');
+
 
 body
 {
@@ -11,7 +12,7 @@ body
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family:  "Roboto" ;
+    font-family:  "Playfair", serif ;
     width: 100vw;
     height: 200vh;
     overflow-x: hidden;
@@ -25,6 +26,6 @@ body
     width: 100vw;
     height: 200vh;
     background: url("../assets/cityscape.jpg") no-repeat center center/cover;
-    filter: blur(5px);
+    filter: blur(8px);
     z-index: -1;
 }
