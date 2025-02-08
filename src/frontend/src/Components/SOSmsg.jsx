@@ -2,12 +2,16 @@ import React, { useState } from "react";
 
 const SOSmsg = () => {
   const [showMessage, setShowMessage] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const [messageText, setMessageText] = useState("");
 
   const handleSOSClick = async () => {
-    const userConfirmed = window.confirm("Are you sure you want to send the SOS alert?");
-    if (!userConfirmed) return;
+    setShowConfirmation(true); // Show the confirmation box
+  };
 
+  const handleConfirmYes = async () => 
+  {
+    setShowConfirmation(false);
     try {
       const response = await fetch("http://localhost:5000/send-sms", {
         method: "POST",
@@ -31,7 +35,12 @@ const SOSmsg = () => {
     }
 
     setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000);
+    setTimeout(() => setShowMessage(false), 1000);
+  };
+  
+  const handleConfirmNo = () => 
+  {
+    setShowConfirmation(false);
   };
 
   return (
@@ -60,8 +69,37 @@ const SOSmsg = () => {
           marginRight: "5px"
         }}
       >
-        <i className="fa-solid fa-bell" style={{ fontSize: '1.75rem', marginLeft: '6px', color: 'red'}}></i>
+        <i className="fa-solid fa-triangle-exclamation" style={{ fontSize: '1.75rem', marginLeft: '2px', color: 'red'}}></i>
       </button>
+      {showConfirmation && (
+        <div
+          style={{
+            position: "absolute",
+            bottom: "60px", // Just above the button
+            right: "20px",
+            background: "white",
+            padding: "10px",
+            borderRadius: "5px",
+            boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+            zIndex: 1001,
+            textAlign: "center",
+          }}
+        >
+          <p>Do you want to send the sos : confirm </p>
+          <button
+            onClick={handleConfirmYes}
+            style={{ marginRight: "10px", padding: "5px", backgroundColor: "red", color: "white", border: "none" }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={handleConfirmNo}
+            style={{ padding: "5px", backgroundColor: "gray", color: "white", border: "none" }}
+          >
+            No
+          </button>
+        </div>
+      )}
 
       {/* Visible SOS Message Popup */}
       {showMessage && (
