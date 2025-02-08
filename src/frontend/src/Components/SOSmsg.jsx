@@ -5,6 +5,9 @@ const SOSmsg = () => {
   const [messageText, setMessageText] = useState("");
 
   const handleSOSClick = async () => {
+    const userConfirmed = window.confirm("Are you sure you want to send the SOS alert?");
+    if (!userConfirmed) return;
+
     try {
       const response = await fetch("http://localhost:5000/send-sms", {
         method: "POST",
@@ -24,7 +27,7 @@ const SOSmsg = () => {
       }
 
     } catch (error) {
-      setMessageText("⚠️ Error sending SOS message!");
+      setMessageText("⚠ Error sending SOS message!");
     }
 
     setShowMessage(true);
@@ -37,24 +40,24 @@ const SOSmsg = () => {
         onClick={handleSOSClick}
         style={{
           position: "absolute",
-             display: "flex",
-             justifyContent: "center",
-             alignItems: "center",
-             bottom: "20px",
-             right: "20px",
-             padding: "10px",
-             backgroundColor: "white",
-             color: "white",
-             border: "none",
-             borderRadius: "50%",
-             cursor: "pointer",
-             boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.5)",
-             zIndex: 1000,
-             textAlign: "center",
-             maxWidth: "4vw",
-             height: "4vw",
-             marginBottom: "70px",
-             marginRight: "5px"
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          bottom: "20px",
+          right: "20px",
+          padding: "10px",
+          backgroundColor: "white",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          cursor: "pointer",
+          boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.5)",
+          zIndex: 1000,
+          textAlign: "center",
+          maxWidth: "4vw",
+          height: "4vw",
+          marginBottom: "70px",
+          marginRight: "5px"
         }}
       >
         <i className="fa-solid fa-bell" style={{ fontSize: '1.75rem', marginLeft: '6px', color: 'red'}}></i>
